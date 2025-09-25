@@ -7,6 +7,13 @@ module AsciidoctorLists
 
     ListMacroAttributes = Hash.new
 
+  class ListPreprocessor < ::Asciidoctor::Extensions::Preprocessor
+    def process document, reader
+      document.set_attr 'asciidoctor-lists-enabled', ''
+      nil
+    end
+  end
+
   # Replaces list-of::element[] with UUID and saves attributes in ListMacroPlaceholder
   class ListMacro < ::Asciidoctor::Extensions::BlockMacroProcessor
     use_dsl
@@ -97,6 +104,7 @@ end
 
 # Register the extensions to asciidoctor
 Asciidoctor::Extensions.register do
+  preprocessor AsciidoctorLists::Asciidoctor::ListPreprocessor
   block_macro AsciidoctorLists::Asciidoctor::ListMacro
   tree_processor AsciidoctorLists::Asciidoctor::ListTreeprocessor
 end
