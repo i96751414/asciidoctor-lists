@@ -47,7 +47,10 @@ module AsciidoctorLists
          enhanced_rendering = params[:enhanced_rendering]
          hide_empty_section = params[:hide_empty_section]
 
-         elements = document.find_by(traverse_documents: true, context: params[:element].to_sym)
+         elements = document.find_by(traverse_documents: true, context: params[:element].to_sym) do |el|
+           !el.option?('no-lists')
+         end
+
          if elements.length > 0
            elements.each do |element|
 
